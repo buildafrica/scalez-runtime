@@ -1,13 +1,13 @@
 {
-  "name": "scratch-vm",
+  "name": "scalez-runtime",
   "version": "4.5.251",
-  "description": "Virtual Machine for Scratch 3.0",
+  "description": "Virtual Machine for Scale based off Scratch 3.0",
   "author": "Andrew Miracle <me@andrewmiracle.com>",
   "license": "BSD-3-Clause",
-  "homepage": "https://github.com/scratchfoundation/scratch-vm#readme",
+  "homepage": "https://github.com/buildafrica/scalez-runtime#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/scratchfoundation/scratch-vm.git",
+    "url": "https://github.com/buildafrica/scalez-runtime.git",
     "sha": "192d4265ae200c50f050b071354f332a20809c6f"
   },
   "main": "./dist/node/scratch-vm.js",
