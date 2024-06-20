@@ -69,7 +69,8 @@ class Scratch3SensingBlocks {
             sensing_dayssince2000: this.daysSince2000,
             sensing_loudness: this.getLoudness,
             sensing_loud: this.isLoud,
-            sensing_askandwait: this.askAndWait,
+            // sensing_askandwait: this.askAndWait,
+            sensing_askandwait: this.web3AskAndWait,
             sensing_answer: this.getAnswer,
             sensing_username: this.getUsername,
             sensing_userid: () => {} // legacy no-op block
@@ -155,6 +156,20 @@ class Scratch3SensingBlocks {
 
     askAndWait (args, util) {
         const _target = util.target;
+        return new Promise(resolve => {
+            const isQuestionAsked = this._questionList.length > 0;
+            this._enqueueAsk(String(args.QUESTION), resolve, _target, _target.visible, _target.isStage);
+            if (!isQuestionAsked) {
+                this._askNextQuestion();
+            }
+        });
+    }
+
+    web3AskAndWait (args, util) {
+        const _target = util.target;
+
+        console.log({ args, util, from: 'blocks:src/blocks/scratch3_sensing.js'})
+        
         return new Promise(resolve => {
             const isQuestionAsked = this._questionList.length > 0;
             this._enqueueAsk(String(args.QUESTION), resolve, _target, _target.visible, _target.isStage);
