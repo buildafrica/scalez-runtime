@@ -272,8 +272,9 @@ class Scratch3SensingBlocks {
     }
 
     getAnswer() {
-        return this._getContractMessage();
-        // return this._answer;
+        // return this._getContractMessage();
+        // let's do this tempoarily
+        return this._answer;
     }
 
     touchingObject(args, util) {

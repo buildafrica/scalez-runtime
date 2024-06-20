@@ -100,6 +100,11 @@ export function byteArrayFromStr(str) {
   }
 }
 
+/**
+ * 
+ * @see https://github.com/PhilippeR26/starknet.js-workshop-typescript/blob/789e912a1ac647e4eb87f3ad97f52b44b2851f99/src/scripts/shortstring/byteArray.ts#L20  
+ * @returns string
+ */
 export function stringFromByteArray(myByteArray) {
   const pending_word = BigInt(myByteArray.pending_word) === 0n ? '' : shortString.decodeShortString(num.toHex(myByteArray.pending_word));
   return myByteArray.data.reduce<string>(
