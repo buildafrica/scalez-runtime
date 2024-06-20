@@ -100,15 +100,26 @@ class Scratch3SensingBlocks {
     _onAnswer (answer) {
         this._answer = answer;
         const questionObj = this._questionList.shift();
+
+
         if (questionObj) {
             const [_question, resolve, target, wasVisible, wasStage] = questionObj;
             // If the target was visible when asked, hide the say bubble unless the target was the stage.
             if (wasVisible && !wasStage) {
                 this.runtime.emit('SAY', target, 'say', '');
             }
+
+            /**
+             * @operation 
+             * Perform the Web3 Operation here
+             */
+            console.log({ questionObj, answer: this._answer, from: 'runtime/src/blocks/scratch3_sensing:_onAnswer'})
+
             resolve();
             this._askNextQuestion();
         }
+
+
     }
 
     _resetAnswer () {
@@ -168,15 +179,16 @@ class Scratch3SensingBlocks {
     web3AskAndWait (args, util) {
         const _target = util.target;
 
-        console.log({ args, util, from: 'blocks:src/blocks/scratch3_sensing.js'})
-        
-        return new Promise(resolve => {
+       console.log({ args, _target, util, from: 'blocks:src/blocks/scratch3_sensing.js'})
+
+       return new Promise(resolve => {
             const isQuestionAsked = this._questionList.length > 0;
             this._enqueueAsk(String(args.QUESTION), resolve, _target, _target.visible, _target.isStage);
             if (!isQuestionAsked) {
                 this._askNextQuestion();
             }
-        });
+        })
+        
     }
 
     getAnswer () {
