@@ -1,6 +1,5 @@
-import { RpcProvider, Contract } from "starknet";
+import { RpcProvider, shortString, num, Contract } from "starknet";
   
-
 const messageContractAddress =
 "0x6b7331232ca3bf34effacd7e68bf87728fbbd063f73c219b42aff07535457e";
 
@@ -101,11 +100,20 @@ export function byteArrayFromStr(str) {
   }
 }
 
-
+export function stringFromByteArray(myByteArray) {
+  const pending_word = BigInt(myByteArray.pending_word) === 0n ? '' : shortString.decodeShortString(num.toHex(myByteArray.pending_word));
+  return myByteArray.data.reduce<string>(
+      (cumuledString, encodedString) => {
+          const add = BigInt(encodedString) === 0n ? '' : shortString.decodeShortString(num.toHex(encodedString));
+          return cumuledString + add
+      }
+      , ""
+  ) + pending_word;
+}
 
 export const messageContract = new Contract(
   message_abi,
   messageContractAddress,
   rpc_provider,
-  );
+);
   

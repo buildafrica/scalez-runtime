@@ -1,8 +1,8 @@
 const Cast = require("../util/cast");
 const Timer = require("../util/timer");
 const getMonitorIdForBlockWithArgs = require("../util/get-monitor-id");
-const { messageContract, byteArrayFromStr } = require("../util/starknet");
-const { connect, disconnect } = require("get-starknet");
+const { messageContract, byteArrayFromStr, stringFromByteArray } = require("../util/starknet");
+const { connect } = require("get-starknet");
 
 class Scratch3SensingBlocks {
     constructor(runtime) {
@@ -107,16 +107,18 @@ class Scratch3SensingBlocks {
      * @_getContractMessage get the value from the contract interaction
      */
     _getContractMessage = async () => {
+        const connection = await connect();
+        
         try {
-            const connection = await connect();
             if (connection && connection.isConnected) {
-                const { selectedAddress: address, account } = connection;
+                messageContract.connect(connection.account);
+                const msg =  await messageContract.get_message();
 
-                console.log({ address, account, id: "_getContractMessage" });
+                if(!msg) return "";
 
-                messageContract.connect(account);
-                console.log("message: ", message);
-                return await messageContract.get_message();
+                console.log({ msg })
+
+                return stringFromByteArray(msg);
             }
         } catch (err) {
             console.log(
@@ -133,20 +135,18 @@ class Scratch3SensingBlocks {
             if (connection && connection.isConnected) {
                 const { selectedAddress: address, account } = connection;
 
-                console.log({ address, account, id: "_sendContractMessage" });
+                console.log({ address, answer, account, id: "_sendContractMessage" });
 
                 // connect contract
                 messageContract.connect(account);
 
                 if (!answer) return null;
                 const byteArray = byteArrayFromStr(answer);
+
                 return await messageContract.send_message(byteArray);
             }
         } catch (err) {
-            console.log(
-                err.message,
-                "[from:scractch3/sensing_sendContractMessage]",
-            );
+            console.log(err.message,"[from:scractch3/sensing_sendContractMessage]");
         }
     }
 
@@ -170,7 +170,7 @@ class Scratch3SensingBlocks {
                 answer,
                 from: "runtime/src/blocks/scratch3_sensing:_onAnswer",
             });
-            _this._sendContractMessage(answer);
+            this._sendContractMessage(answer);
 
             resolve();
             this._askNextQuestion();

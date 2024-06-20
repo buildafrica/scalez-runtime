@@ -1,6 +1,6 @@
 {
   "name": "scalez-runtime",
-  "version": "4.5.256",
+  "version": "4.5.263",
   "description": "Virtual Machine for Scale based off Scratch 3.0",
   "author": "Andrew Miracle <me@andrewmiracle.com>",
   "license": "BSD-3-Clause",
