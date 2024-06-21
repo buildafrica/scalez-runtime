@@ -112,6 +112,7 @@ class Scratch3SensingBlocks {
         try {
             if (connection && connection.isConnected) {
                 messageContract.connect(connection.account);
+
                 const msg =  await messageContract.get_message();
 
                 if(!msg) return "";
@@ -460,8 +461,9 @@ class Scratch3SensingBlocks {
         return 0;
     }
 
-    getUsername(args, util) {
-        return util.ioQuery("userData", "getUsername");
+    async getUsername(args, util) {
+        const connection = await connect();
+        return connection.selectedAddress ?? util.ioQuery("userData", "getUsername");
     }
 }
 
